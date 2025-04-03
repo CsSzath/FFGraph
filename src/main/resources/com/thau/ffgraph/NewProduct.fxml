@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" onDragDropped="#handleFileDragAndDrop" onDragOver="#handleFileDragAndDrop" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
+    <children>
+      <Label text="Hőkezelés Grafikus Kiértékelő">
+         <font>
+            <Font name="Arial Bold" size="32.0" />
+         </font>
+      </Label>
+      <HBox spacing="5.0">
+         <children>
+            <Button fx:id="switchToFFGraph" mnemonicParsing="false" onAction="#switchToPrimary" text="Vissza" />
+            <Button fx:id="btnSave" mnemonicParsing="false" text="Mentés" />
+            <Button fx:id="btnExit" mnemonicParsing="false" text="Kilépés" />
+         </children>
+      </HBox>
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Cégnév" />
+            <TextField fx:id="inpCompanyName">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <Label text="Berendezés azonosító" />
+            <TextField fx:id="inpMachineId">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Label text="Terméknév" />
+                        <Label fx:id="dispProductName" minWidth="200.0" text="Kontra Füst">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Label text="Hőkezelés kezdete" />
+                        <Label fx:id="dispDateTime" minWidth="200.0" text="2025-99-99T08:00:00">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox prefHeight="700.0" prefWidth="970.0">
+               <children>
+                  <LineChart fx:id="chtImportedTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" title="Hőmérséklet">
+                     <xAxis>
+                        <CategoryAxis fx:id="axisTempTime" side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="axisTempTemperature" side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="chtImportedHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" prefHeight="400.0" title="Páratartalom">
+                     <xAxis>
+                        <CategoryAxis fx:id="axisHumTime" side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis fx:id="axisHumHumidity" side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

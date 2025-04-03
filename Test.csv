@@ -1,0 +1,10 @@
+﻿Data Sampler1
+Kontra füst
+Füstölés
+#,Date,Time,Milliseconds,Day of week,Interval Time ms,Sub Interval Time ms,Triggered,Kamra Hőm. Values,Mag Hőm Values,Pára Values,Lépés típus Values,Kamra beáll. Values,Mag beáll. Values,Pára beáll. Values,
+0,44264,0.86191,0,3,5,0,1,661,525,26,3,65,0,0,
+1,44264,0.862604,0,3,60006,60001,0,684,574,27,3,65,0,0,
+2,44264,0.863299,0,3,120006,60000,0,683,544,29,3,65,0,0,
+3,44264,0.863993,0,3,180008,60002,0,656,514,49,3,65,0,0,
+4,44264,0.864688,0,3,240006,59998,0,691,617,41,3,65,0,0,
+5,44264,0.865382,0,3,300006,60000,0,706,658,40,3,65,0,0,

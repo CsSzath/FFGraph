@@ -1,0 +1,6 @@
+com\thau\ffgraph\Database.class
+module-info.class
+com\thau\ffgraph\SecondaryController.class
+com\thau\ffgraph\PrimaryController.class
+com\thau\DataModel\Record.class
+com\thau\ffgraph\App.class
