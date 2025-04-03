@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import com.thau.CsvHandler.CsvController;
 import com.thau.DataModel.DataRecord;
 import com.thau.DataModel.Product;
+import com.thau.Db.DbQueries;
+import com.thau.Db.Registry;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" onDragDropped="#handleFileDragAndDrop" onDragOver="#handleFileDragAndDrop" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
+<VBox alignment="TOP_CENTER" onDragOver="#handleFileDragAndDrop" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
     <children>
       <Label text="Hőkezelés Grafikus Kiértékelő">
          <font>
@@ -22,22 +23,55 @@
       <HBox spacing="5.0">
          <children>
             <Button fx:id="switchToFFGraph" mnemonicParsing="false" onAction="#switchToPrimary" text="Vissza" />
-            <Button fx:id="btnSave" mnemonicParsing="false" text="Mentés" />
-            <Button fx:id="btnExit" mnemonicParsing="false" text="Kilépés" />
+            <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveData" text="Mentés" />
+            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#exitApp" text="Kilépés" />
          </children>
       </HBox>
       <VBox spacing="5.0">
          <children>
-            <Label text="Cégnév" />
-            <TextField fx:id="inpCompanyName">
-               <font>
-                  <Font size="17.0" />
-               </font></TextField>
-            <Label text="Berendezés azonosító" />
-            <TextField fx:id="inpMachineId">
-               <font>
-                  <Font size="17.0" />
-               </font></TextField>
+            <HBox>
+               <children>
+                  <VBox>
+                     <children>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <Label text="Megrendelő:" />
+                              <ComboBox fx:id="selectCompanyName" onAction="#companyChosen" prefWidth="150.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <Label text="Berendezés azonosító:" />
+                              <ComboBox fx:id="selectMachineId" onAction="#machineChosen" prefWidth="150.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="inpCompanyName">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="inpMachineId">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
@@ -59,7 +93,7 @@
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
                         <Label text="Hőkezelés kezdete" />
-                        <Label fx:id="dispDateTime" minWidth="200.0" text="2025-99-99T08:00:00">
+                        <Label fx:id="dispDateTime" minWidth="200.0" text="2025-99-99 08:00:00">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -83,7 +117,7 @@
          <content>
             <VBox prefHeight="700.0" prefWidth="970.0">
                <children>
-                  <LineChart fx:id="chtImportedTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" title="Hőmérséklet">
+                  <LineChart fx:id="chtImportedTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" onMouseEntered="#addTooltipToTemperatureChartArea" prefHeight="400.0" title="Hőmérséklet">
                      <xAxis>
                         <CategoryAxis fx:id="axisTempTime" side="BOTTOM" />
                      </xAxis>

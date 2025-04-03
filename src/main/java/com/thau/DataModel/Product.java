@@ -11,10 +11,9 @@ public Product(String name, String companyName, String machineId, int date, doub
     this.name = name;
     this.companyName = companyName;
     this.machineId = machineId;
-    java.time.LocalDateTime dateTime = java.time.LocalDateTime.of(
-        java.time.LocalDate.of(1900, 1, 1).plusDays(date), 
-        java.time.LocalTime.ofSecondOfDay((long) (time * 60 * 60 * 24)));
-    this.dateTime = dateTime.toString();
+    this.dateTime = java.time.LocalDate.of(1900, 1, 1).plusDays(date) + 
+                    " " + 
+                    java.time.LocalTime.ofSecondOfDay((long) (time * 60 * 60 * 24)); // Combine date and time fields;
 }
 
 public String getName() {

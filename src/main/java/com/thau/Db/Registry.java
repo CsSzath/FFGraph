@@ -1,5 +1,5 @@
 
-package com.thau.ffgraph;
+package com.thau.Db;
 
 import java.io.File;
 import java.io.FileReader;

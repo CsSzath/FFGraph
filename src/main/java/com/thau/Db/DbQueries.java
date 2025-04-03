@@ -1,4 +1,4 @@
-package com.thau.ffgraph;
+package com.thau.Db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

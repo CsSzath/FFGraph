@@ -23,7 +23,7 @@ public class Graph {
 
     public void populateTempChart() {
 
-        tempChart.getData().clear();
+        tempChart.getData().clear(); //Clear the chart data before populating it again
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         series1.setName("Kamrahőmérséklet");
         for (DataRecord dataRecord : dataRecords) {
@@ -60,7 +60,7 @@ public class Graph {
 
     public void populateHumidityChart() {
         
-        tempChart.getData().clear();
+        humidityChart.getData().clear(); //Clear the chart data before populating it again
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         series1.setName("Páratartalom");
         for (DataRecord dataRecord : dataRecords) {

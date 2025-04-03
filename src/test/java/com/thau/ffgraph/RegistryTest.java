@@ -2,7 +2,7 @@ package com.thau.ffgraph;
 
 import org.junit.jupiter.api.Test;
 
-
+import com.thau.Db.Registry;
 
 import static org.junit.jupiter.api.Assertions.*;
 

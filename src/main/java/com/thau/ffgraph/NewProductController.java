@@ -1,27 +1,32 @@
 package com.thau.ffgraph;
 
-//import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-//import java.util.List;
+import java.util.ResourceBundle;
 
 import com.thau.CsvHandler.CsvController;
 import com.thau.CsvHandler.ImportChecker;
 import com.thau.DataModel.DataRecord;
+import com.thau.DataModel.Product;
+import com.thau.Db.DbQueries;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-//import javafx.scene.input.Dragboard;
 import javafx.scene.control.Tooltip;
 
-public class NewProductController {
+public class NewProductController implements Initializable{
 
     ArrayList<DataRecord> records = new ArrayList<>();
+    DbQueries dbQueries = new DbQueries(App.getConnection());
 
+@FXML
+    ComboBox<String> selectCompanyName, selectMachineId;
 @FXML
     TextField inpCompanyName, inpMachineId;
 @FXML
@@ -32,6 +37,24 @@ public class NewProductController {
     LineChart<String, Number> chtImportedTemperature;
 @FXML
     LineChart<String, Number> chtImportedHumidity;
+
+
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        String [] existingCompaniesList = dbQueries.getAllCompanyNames().toArray(new String[0]);
+            selectCompanyName.getItems().clear();
+            selectCompanyName.getItems().addAll(existingCompaniesList);
+            if(existingCompaniesList.length > 0) {
+                selectCompanyName.setValue(existingCompaniesList[0]);
+            }
+
+            selectMachineId.setDisable(true);
+
+            System.out.println("Controller initialized.");
+    }
+
+
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -67,7 +90,8 @@ public class NewProductController {
                     List<File> files = dragboard.getFiles();
                     if (files.size() > 0)
                     {
-                        
+                        var file = dragboard.getFiles().get(0); // Get the first file
+                        processFile(file.getAbsolutePath());
                     }
                 }
                 event.setDropCompleted(isCompleted);
@@ -86,17 +110,32 @@ public class NewProductController {
             dispProductName.setText(productName);
             dispDateTime.setText(csvController.getDateTimeFromCsv(filePath));
         } else {
-            System.out.println("Invalid file format or data record." +" " + importChecker.isCsv() + " " + importChecker.hasValidDataRecord());
+            System.out.println("Invalid file format or data record. " + importChecker.isCsv() + " " + importChecker.hasValidDataRecord());
         }
 
         Graph graph = new Graph(chtImportedTemperature, chtImportedHumidity, records);
         graph.populateTempChart();
         graph.populateHumidityChart();
-
-        
-    }
+  }
 
     @FXML
+    private void addTooltipToTemperatureChartArea() {
+        chtImportedTemperature.setOnMouseClicked(event -> {
+            double x = event.getX();
+            double y = event.getY();
+            String tooltipText = "Mouse Position - X: " + x + ", Y: " + y;
+            Tooltip tooltip = new Tooltip(tooltipText);
+            Tooltip.install(chtImportedTemperature, tooltip);
+            tooltip.show(chtImportedTemperature, event.getScreenX(), event.getScreenY());
+        });
+
+        chtImportedTemperature.setOnMouseExited(event -> {
+            Tooltip.uninstall(chtImportedTemperature, null);
+        });
+    }
+
+
+    /*@FXML
     public void addTooltipsToChart(LineChart<String, Number> chart) {
         for (XYChart.Series<String, Number> series : chart.getData()) {
             for (XYChart.Data<String, Number> data : series.getData()) {
@@ -105,7 +144,7 @@ public class NewProductController {
                 data.getNode().setOnMouseEntered(event -> tooltip.show(data.getNode(), event.getScreenX(), event.getScreenY()));
                 data.getNode().setOnMouseExited(event -> tooltip.hide());
             }
-        }
+        }*/
 
         /*for (XYChart.Series<String, Number> series : tempChart.getData()) {
             for (XYChart.Data<String, Number> data : series.getData()) {
@@ -115,7 +154,8 @@ public class NewProductController {
                 tooltip.setText("X: " + data.getXValue() + "\nY: " + data.getYValue());
             });
             }
-        }
+        }*/
+
         /*for (final XYChart.Data<String, Number> data : series1.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
                 @Override
@@ -123,7 +163,78 @@ public class NewProductController {
                     Tooltip.install(data.getNode(), new Tooltip("Kamrahőmérséklet: " + data.getYValue()));
                 }
             });                      
-        }*/
+        }
+    }*/
+    @FXML
+    private void saveData() {
+        String companyName = inpCompanyName.getText();
+        if(companyName == null || companyName.isEmpty() || companyName.isBlank()) {
+            companyName = "Ismeretlen";
+        }
+        String machineId = inpMachineId.getText();
+        if(machineId == null || machineId.isEmpty() || machineId.isBlank()) {
+            machineId = "Ismeretlen";
+        }
+        
+        Product product = new Product(dispProductName.getText(), companyName, machineId, records.get(0).getDate(), records.get(0).getTime());
+        DbQueries dbQueries = new DbQueries(App.getConnection());
+
+        if(dbQueries.getProductId(companyName, companyName, machineId, machineId) != -1){
+            dbQueries.insertProduct(product);
+            int productId = dbQueries.getProductId(dispProductName.getText(), companyName, machineId, dispDateTime.getText());
+            if (productId != -1) {
+                dbQueries.insertDataRecords(records, productId);
+                System.out.println("New Product ID: " + productId);
+                //Clear out imported data
+                companyName = "";
+                machineId = "";
+                inpCompanyName.setText(companyName);
+                inpMachineId.setText(machineId);
+                records.clear();
+                chtImportedTemperature.getData().clear();
+                chtImportedHumidity.getData().clear();
+                dispProductName.setText("---");
+                dispDateTime.setText("---");
+            } else {
+                System.out.println("Product insert failed. Data records were not inserted.");
+            }
+        } else {
+            System.out.println("Product already exists in the database. Data records were not inserted.");
+        }
+
+        
     }
+
+    @FXML
+    private void exitApp() {
+        System.out.println("Exiting application...");
+        App.closeConnection();
+        System.exit(0);
+    }
+
+    @FXML
+    private void companyChosen() {
+        if(selectCompanyName.getValue() != null) {
+            String selectedCompany = selectCompanyName.getValue();
+            String[] existingMachineIdsList = dbQueries.getMachineIdsByCompanyName(selectedCompany).toArray(new String[0]);
+            selectMachineId.getItems().clear();
+            selectMachineId.getItems().addAll(existingMachineIdsList);
+            
+            selectMachineId.setDisable(false);
+            inpCompanyName.setText(selectedCompany);
+            inpMachineId.setText("");
+        } else {
+            selectMachineId.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void machineChosen() {
+        if(selectMachineId.getValue() != null) {
+            inpMachineId.setText(selectMachineId.getValue());
+        }
+    }
+
+
 
 }

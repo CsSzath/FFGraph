@@ -21,9 +21,9 @@
       </Label>
       <HBox spacing="5.0">
          <children>
-            <Button fx:id="switchToSecondary" mnemonicParsing="false" onAction="#switchToSecondary" text="Új termék" />
-            <Button mnemonicParsing="false" text="Adatbázis Export" />
-            <Button mnemonicParsing="false" text="Kilépés" />
+            <Button fx:id="switchToSecondary" mnemonicParsing="false" onAction="#switchToSecondary" text="Új termék beolvasása" />
+            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#exportData" text="Adatbázis Export" />
+            <Button fx:id="btnExit" mnemonicParsing="false" onAction="#exitApp" text="Kilépés" />
          </children>
       </HBox>
       <HBox alignment="CENTER">
@@ -31,7 +31,7 @@
             <VBox alignment="CENTER" spacing="10.0">
                <children>
                   <Label text="Megrendelő:" />
-                  <ComboBox fx:id="selectCompanyName" prefWidth="150.0" />
+                  <ComboBox fx:id="selectCompanyName" onAction="#companyChosen" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -40,7 +40,7 @@
             <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="NEVER">
                <children>
                   <Label text="Berendezés azonosító:" />
-                  <ComboBox fx:id="selectMachineId" prefWidth="150.0" />
+                  <ComboBox fx:id="selectMachineId" onAction="#machineChosen" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -49,7 +49,7 @@
             <VBox alignment="CENTER" spacing="10.0">
                <children>
                   <Label text="Termék neve:" />
-                  <ComboBox fx:id="selectProductName" prefWidth="150.0" />
+                  <ComboBox fx:id="selectProductName" onAction="#productChosen" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -58,7 +58,7 @@
             <VBox alignment="CENTER" spacing="10.0">
                <children>
                   <Label text="Hőkezelés kezdete:" />
-                  <ComboBox fx:id="selectDateTime" prefWidth="150.0" />
+                  <ComboBox fx:id="selectDateTime" onAction="#dateTimeChosen" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -70,7 +70,7 @@
          <content>
             <VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="970.0">
                <children>
-                  <LineChart fx:id="chtTemperature" legendSide="RIGHT" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="819.0" title="Hőmérséklet">
+                  <LineChart fx:id="chtTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="819.0" title="Hőmérséklet">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -78,7 +78,7 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </LineChart>
-                  <LineChart fx:id="chtHumidity" legendSide="RIGHT" title="Páratartalom">
+                  <LineChart fx:id="chtHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" title="Páratartalom">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
