@@ -12,10 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.fxml.Initializable;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -112,31 +115,56 @@ public class FFGraphController implements Initializable {
         csvController.exportRecordsToCsv(fileName, selectProductName.getValue(), records);
     }
 
-@FXML
-    private void deleteProduct() {
-        String selectedCompany = selectCompanyName.getValue();
-        String selectedMachineId = selectMachineId.getValue();
-        String selectedProductName = selectProductName.getValue();
-        String selectedDateTime = selectDateTime.getValue();
-        
-        int productId = dbQueries.getProductId(selectedProductName, selectedCompany, selectedMachineId, selectedDateTime);
-        
-        if(productId != -1) {
-            dbQueries.deleteDataRecordsByProductId(productId);
-            dbQueries.deleteProductById(productId);
-            selectMachineId.getItems().clear();
-            selectProductName.getItems().clear();
-            selectDateTime.getItems().clear();
-            clearData();
-            lblError.setText("Sikeresen törölve: " + selectedProductName + " (" + selectedDateTime + ")");
-            lblError.setVisible(true);
-        } else {
-            lblError.setText("Adatbázis hiba: Nincs ilyen termék!");
-            lblError.setVisible(true);
+    @FXML
+        private void deleteProduct() {
+            String selectedCompany = selectCompanyName.getValue();
+            String selectedMachineId = selectMachineId.getValue();
+            String selectedProductName = selectProductName.getValue();
+            String selectedDateTime = selectDateTime.getValue();
+            
+            int productId = dbQueries.getProductId(selectedProductName, selectedCompany, selectedMachineId, selectedDateTime);
+            
+            if(productId != -1) {
+                dbQueries.deleteDataRecordsByProductId(productId);
+                dbQueries.deleteProductById(productId);
+                selectMachineId.getItems().clear();
+                selectProductName.getItems().clear();
+                selectDateTime.getItems().clear();
+                clearData();
+                lblError.setText("Sikeresen törölve: " + selectedProductName + " (" + selectedDateTime + ")");
+                lblError.setVisible(true);
+            } else {
+                lblError.setText("Adatbázis hiba: Nincs ilyen termék!");
+                lblError.setVisible(true);
+            }
+        }
+
+    @FXML
+    private void handleChartClick(MouseEvent event) {
+        // Get the source chart from the event
+        if (event.getSource() instanceof LineChart<?, ?>) {
+            LineChart<String, Number> chart = (LineChart<String, Number>) event.getSource();
+            double mouseX = event.getX();
+            javafx.scene.chart.Axis<String> xAxis = chart.getXAxis();
+            String xValue = xAxis.getValueForDisplay(mouseX);
+            //System.out.println("Clicked X value: " + xValue);
+
+            for(int i =0; i < records.size(); i++) {
+                DataRecord recordY = records.get(i);
+                String yValue = LocalTime.ofSecondOfDay((long) (recordY.getTime() * 60 * 60 * 24)).toString();
+                if(yValue.equals(xValue)) {
+                    //System.out.println("Clicked Y value: " + records.get(i).getCoreTemp() / 10);
+                    Tooltip tooltip = new Tooltip("Kamrahőmérséklet: " + String.format("%.1f", (float) records.get(i).getAirTemp() / 10) + " °C\n" +
+                                                "Maghőmérséklet " + String.format("%.1f", (float) records.get(i).getCoreTemp() / 10) + " °C\n" +
+                                                "Páratartalom: " + records.get(i).getHumidity() + " %\n" +
+                                                "Eltelt idő: " + Calculations.getElapsedTime(records.get(i)));
+                    tooltip.setAutoHide(true);
+                    tooltip.show(chart, event.getScreenX(), event.getScreenY());
+                    break;
+                }
+            }
         }
     }
-
-
 
     @FXML
     private void companyChosen() {

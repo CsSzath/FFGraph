@@ -80,7 +80,7 @@ public class Graph {
        
     }
 
-    private String timeToText(Double time) {
+    public String timeToText(Double time) {
         return java.time.LocalTime.ofSecondOfDay((long) (time * 60 * 60 * 24)).toString();
         
     }

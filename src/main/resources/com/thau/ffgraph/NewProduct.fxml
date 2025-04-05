@@ -152,7 +152,7 @@
          <content>
             <VBox prefHeight="700.0" prefWidth="970.0">
                <children>
-                  <LineChart fx:id="chtImportedTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" onMouseEntered="#addTooltipToTemperatureChartArea" prefHeight="400.0" title="Hőmérséklet">
+                  <LineChart fx:id="chtImportedTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" onMouseClicked="#handleChartClick" prefHeight="400.0" title="Hőmérséklet">
                      <xAxis>
                         <CategoryAxis fx:id="axisTempTime" side="BOTTOM" />
                      </xAxis>
@@ -168,7 +168,7 @@
                         <Insets left="45.0" />
                      </padding>
                   </HBox>
-                  <LineChart fx:id="chtImportedHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" prefHeight="400.0" title="Páratartalom">
+                  <LineChart fx:id="chtImportedHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" onMouseClicked="#handleChartClick" prefHeight="400.0" title="Páratartalom">
                      <xAxis>
                         <CategoryAxis fx:id="axisHumTime" side="BOTTOM" />
                      </xAxis>

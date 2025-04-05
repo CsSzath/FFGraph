@@ -106,7 +106,7 @@
          <content>
             <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="970.0">
                <children>
-                  <LineChart fx:id="chtTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" title="Hőmérséklet">
+                  <LineChart fx:id="chtTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" onMouseClicked="#handleChartClick" prefHeight="400.0" title="Hőmérséklet">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -122,7 +122,7 @@
                         <Insets left="45.0" />
                      </padding>
                   </HBox>
-                  <LineChart fx:id="chtHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" prefHeight="400.0" title="Páratartalom">
+                  <LineChart fx:id="chtHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" onMouseClicked="#handleChartClick" prefHeight="400.0" title="Páratartalom">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

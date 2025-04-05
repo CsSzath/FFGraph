@@ -23,6 +23,14 @@ public class Calculations {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    public static String getElapsedTime(DataRecord record) {
+
+        long elapsedTimeMillis = record.getElapsedTimeMs();
+        long hours = TimeUnit.MILLISECONDS.toHours(elapsedTimeMillis);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMillis) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMillis) % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
 
     public static String getHighestCoreTemp(ArrayList<DataRecord> records) {

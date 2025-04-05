@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.time.LocalTime;
 
 import com.thau.CsvHandler.CsvController;
 import com.thau.CsvHandler.ImportChecker;
@@ -19,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
@@ -133,8 +135,6 @@ public class NewProductController implements Initializable{
 
         stepsBar.setBarBox(barSteps); // Set the HBox to the new one
         stepsBar.setStepTypes(csvController.getProcessStepsFromCsv(records)); // Set the step types to the new ones
-        
-
 
         stepsBar.calculatePercentages(); // Call the method to calculate percentages
         stepsBar.generateRectangles(); // Call the method to generate rectangles and labels
@@ -162,54 +162,34 @@ private void bindBarStepsToChartWidth() {
     });
 }
 
+@FXML
+private void handleChartClick(MouseEvent event) {
+    // Get the source chart from the event
+    if (event.getSource() instanceof LineChart<?, ?>) {
+        LineChart<String, Number> chart = (LineChart<String, Number>) event.getSource();
+        double mouseX = event.getX();
+        javafx.scene.chart.Axis<String> xAxis = chart.getXAxis();
+        String xValue = xAxis.getValueForDisplay(mouseX);
+        //System.out.println("Clicked X value: " + xValue);
 
-    @FXML
-    private void addTooltipToTemperatureChartArea() {
-        chtImportedTemperature.setOnMouseClicked(event -> {
-            double x = event.getX();
-            double y = event.getY();
-            String tooltipText = "Mouse Position - X: " + x + ", Y: " + y;
-            Tooltip tooltip = new Tooltip(tooltipText);
-            Tooltip.install(chtImportedTemperature, tooltip);
-            tooltip.show(chtImportedTemperature, event.getScreenX(), event.getScreenY());
-        });
-
-        chtImportedTemperature.setOnMouseExited(event -> {
-            Tooltip.uninstall(chtImportedTemperature, null);
-        });
-    }
-
-
-    /*@FXML
-    public void addTooltipsToChart(LineChart<String, Number> chart) {
-        for (XYChart.Series<String, Number> series : chart.getData()) {
-            for (XYChart.Data<String, Number> data : series.getData()) {
-                Tooltip tooltip = new Tooltip("X: " + data.getXValue() + "\nY: " + data.getYValue());
-                Tooltip.install(data.getNode(), tooltip);
-                data.getNode().setOnMouseEntered(event -> tooltip.show(data.getNode(), event.getScreenX(), event.getScreenY()));
-                data.getNode().setOnMouseExited(event -> tooltip.hide());
+        for(int i =0; i < records.size(); i++) {
+            DataRecord recordY = records.get(i);
+            String yValue = LocalTime.ofSecondOfDay((long) (recordY.getTime() * 60 * 60 * 24)).toString();
+            if(yValue.equals(xValue)) {
+                //System.out.println("Clicked Y value: " + records.get(i).getCoreTemp() / 10);
+                Tooltip tooltip = new Tooltip("Kamrahőmérséklet: " + String.format("%.1f", (float) records.get(i).getAirTemp() / 10) + " °C\n" +
+                                                "Maghőmérséklet " + String.format("%.1f", (float) records.get(i).getCoreTemp() / 10) + " °C\n" +
+                                                "Páratartalom: " + records.get(i).getHumidity() + " %\n" +
+                                                "Eltelt idő: " + Calculations.getElapsedTime(records.get(i)));
+                tooltip.setAutoHide(true);
+                tooltip.show(chart, event.getScreenX(), event.getScreenY());
+                break;
             }
-        }*/
-
-        /*for (XYChart.Series<String, Number> series : tempChart.getData()) {
-            for (XYChart.Data<String, Number> data : series.getData()) {
-            Tooltip tooltip = new Tooltip("X: " + data.getXValue() + "\nY: " + data.getYValue());
-            Tooltip.install(data.getNode(), tooltip);
-            data.getNode().setOnMouseClicked(event -> {
-                tooltip.setText("X: " + data.getXValue() + "\nY: " + data.getYValue());
-            });
-            }
-        }*/
-
-        /*for (final XYChart.Data<String, Number> data : series1.getData()) {
-            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent event) {
-                    Tooltip.install(data.getNode(), new Tooltip("Kamrahőmérséklet: " + data.getYValue()));
-                }
-            });                      
         }
-    }*/
+    }
+}
+    
+
     @FXML
     private void saveData() {
         String companyName = inpCompanyName.getText();
