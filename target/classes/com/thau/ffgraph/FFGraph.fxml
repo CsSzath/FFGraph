@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" minHeight="480.0" minWidth="640.0" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.FFGraphController">
+<VBox alignment="TOP_CENTER" minHeight="480.0" minWidth="640.0" onKeyPressed="#clearErrorLabel" onMouseExited="#clearErrorLabel" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.FFGraphController">
    <children>
       <Label text="Hőkezelés Grafikus Kiértékelő">
          <font>
@@ -66,11 +66,16 @@
             </VBox>
          </children>
       </HBox>
-      <ScrollPane hbarPolicy="ALWAYS" prefHeight="400.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+      <VBox>
+         <children>
+            <Label fx:id="lblError" text="Error Label" textFill="RED" />
+         </children>
+      </VBox>
+      <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" VBox.vgrow="ALWAYS">
          <content>
-            <VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="970.0">
+            <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="970.0">
                <children>
-                  <LineChart fx:id="chtTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="819.0" title="Hőmérséklet">
+                  <LineChart fx:id="chtTemperature" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="400.0" minWidth="700.0" prefHeight="400.0" title="Hőmérséklet">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -78,7 +83,15 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </LineChart>
-                  <LineChart fx:id="chtHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" title="Páratartalom">
+                  <HBox fx:id="barSteps" maxHeight="30.0" minHeight="30.0" prefHeight="30.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </HBox>
+                  <LineChart fx:id="chtHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" prefHeight="400.0" title="Páratartalom">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

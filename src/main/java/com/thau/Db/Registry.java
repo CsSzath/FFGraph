@@ -52,7 +52,7 @@ public class Registry {
 
             if (exportFile.exists()) {
                 // Import the database from the export file
-                System.out.println("Importing database from export file...");
+                //System.out.println("Importing database from export file...");
                 try (FileReader reader = new FileReader(exportFile)) {
                     StringBuilder sql = new StringBuilder();
                     int c;
@@ -64,7 +64,7 @@ public class Registry {
                 }
             } else {
                 // Create new tables
-                System.out.println("Export file not found. Creating new tables...");
+                //System.out.println("Export file not found. Creating new tables...");
 
                 String createProductTableSql = "CREATE TABLE IF NOT EXISTS Product (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -108,7 +108,7 @@ public class Registry {
              FileWriter writer = new FileWriter(EXPORT_FILE)) {
 
             // Export the database schema and data
-            System.out.println("Exporting database to file...");
+            //System.out.println("Exporting database to file...");
             var resultSet = statement.executeQuery("SCRIPT");
             while (resultSet.next()) {
                 writer.write(resultSet.getString(1) + "\n");

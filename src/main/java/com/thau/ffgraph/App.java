@@ -43,7 +43,7 @@ public class App extends Application {
         
         
          
-        if(initResult == -1) { 
+        /*if(initResult == -1) { 
             System.out.println("Database initialization failed.");
             
         } else if (initResult == 0) {
@@ -51,7 +51,7 @@ public class App extends Application {
         } else {
             System.out.println("Database was already present.");
 
-        }
+        }*/
         launch();
     }
 

@@ -234,5 +234,22 @@ public class DbQueries {
         return dateTimes;
     }
 
+    public ArrayList<Integer> getProcessStepsByProductId(int productId) {
+        String querySql = "SELECT stepType FROM DataRecord WHERE productId = ?;";
+        ArrayList<Integer> processSteps = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(querySql)) {
+            preparedStatement.setInt(1, productId);
+            var resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                processSteps.add(resultSet.getInt("stepType"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return processSteps;
+    }
+
 
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" onDragOver="#handleFileDragAndDrop" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
+<VBox alignment="TOP_CENTER" onDragOver="#handleFileDragAndDrop" onKeyPressed="#clearErrorLabel" onMouseExited="#clearErrorLabel" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
     <children>
       <Label text="Hőkezelés Grafikus Kiértékelő">
          <font>
@@ -29,6 +29,11 @@
       </HBox>
       <VBox spacing="5.0">
          <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="lblError" text="Error Label" textFill="RED" />
+               </children>
+            </VBox>
             <HBox>
                <children>
                   <VBox>
@@ -125,6 +130,14 @@
                         <NumberAxis fx:id="axisTempTemperature" side="LEFT" />
                      </yAxis>
                   </LineChart>
+                  <HBox fx:id="barSteps" maxHeight="30.0" minHeight="30.0" prefHeight="30.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="45.0" />
+                     </padding>
+                  </HBox>
                   <LineChart fx:id="chtImportedHumidity" animated="false" axisSortingPolicy="NONE" createSymbols="false" legendSide="TOP" minHeight="300.0" minWidth="700.0" prefHeight="400.0" title="Páratartalom">
                      <xAxis>
                         <CategoryAxis fx:id="axisHumTime" side="BOTTOM" />

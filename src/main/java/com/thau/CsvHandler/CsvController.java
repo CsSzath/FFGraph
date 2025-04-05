@@ -143,4 +143,13 @@ public class CsvController {
         return "Unknown DateTime";
     }
 
+    public ArrayList<Integer> getProcessStepsFromCsv(ArrayList<DataRecord> records) {
+        ArrayList<Integer> processSteps = new ArrayList<>();
+        for (DataRecord record : records) {
+            int stepType = record.getStepType();
+            processSteps.add(stepType);
+        }
+        return processSteps;
+    }
+
 }
