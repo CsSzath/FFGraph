@@ -55,7 +55,7 @@ public class DbQueries {
             for (DataRecord record : records) {
                 preparedStatement.setInt(1, record.getDate());
                 preparedStatement.setDouble(2, record.getTime());
-                preparedStatement.setInt(3, record.getMilliseconds());
+                preparedStatement.setInt(3, (int) record.getElapsedTimeMs());
                 preparedStatement.setInt(4, record.getAirTemp());
                 preparedStatement.setInt(5, record.getCoreTemp());
                 preparedStatement.setInt(6, record.getHumidity());
@@ -148,11 +148,22 @@ public class DbQueries {
             var resultSet = preparedStatement.executeQuery();
             int i = 0;
             while (resultSet.next()) {
-                DataRecord record = new DataRecord(i, resultSet.getInt( "date"), resultSet.getDouble("time"),
-                        0, 0, 0, 0, 0, resultSet.getInt("airTemp"),
-                        resultSet.getInt("coreTemp"), resultSet.getInt("humidity"),
-                        resultSet.getInt("stepType"), resultSet.getInt("setAirTemp"),
-                        resultSet.getInt("setCoreTemp"), resultSet.getInt("setHumidity"));
+                DataRecord record = new DataRecord(i, 
+                            resultSet.getInt( "date"), 
+                            resultSet.getDouble("time"),
+                0, 
+                    0, 
+                            resultSet.getInt("milliseconds"),
+                0, 
+                    0, 
+                            resultSet.getInt("airTemp"),   
+                            resultSet.getInt("coreTemp"), 
+                            resultSet.getInt("humidity"),
+                            resultSet.getInt("stepType"), 
+                            resultSet.getInt("setAirTemp"),
+                            resultSet.getInt("setCoreTemp"), 
+                            resultSet.getInt("setHumidity")
+                            );
                 records.add(record);
                 i++;
             }

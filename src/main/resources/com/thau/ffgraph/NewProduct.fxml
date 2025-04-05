@@ -10,16 +10,12 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" onDragOver="#handleFileDragAndDrop" onKeyPressed="#clearErrorLabel" onMouseExited="#clearErrorLabel" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
+<VBox alignment="TOP_CENTER" maxHeight="1200.0" maxWidth="1800.0" minHeight="480.0" minWidth="640.0" onDragOver="#handleFileDragAndDrop" onKeyPressed="#clearErrorLabel" onMouseExited="#clearErrorLabel" prefHeight="768.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thau.ffgraph.NewProductController">
     <children>
-      <Label text="Hőkezelés Grafikus Kiértékelő">
-         <font>
-            <Font name="Arial Bold" size="32.0" />
-         </font>
-      </Label>
       <HBox spacing="5.0">
          <children>
             <Button fx:id="switchToFFGraph" mnemonicParsing="false" onAction="#switchToPrimary" text="Vissza" />
@@ -111,6 +107,40 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </VBox>
+                  <TilePane fx:id="pnlSummary" hgap="5.0" prefColumns="2" prefRows="2" vgap="5.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label text="Folyamat időtartama:" />
+                              <Label fx:id="lblTotalTime" text="hh:mm:ss" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label text="Max elért maghőm.:" />
+                              <Label fx:id="lblMaxCoreTemp" text="999.9 °C" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label text="Maghőm. limit:" />
+                              <TextField fx:id="inpCoreTempThreshold" alignment="CENTER" onAction="#chkThreshold" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <Label text="Limit fölött töltött idő:" />
+                              <Label fx:id="lblTimeAboveTreshold" text="hh:mm:ss" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </TilePane>
                </children>
             </HBox>
          </children>

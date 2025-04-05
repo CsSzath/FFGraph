@@ -24,6 +24,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("FFGraph"), 1024, 768);
         stage.setScene(scene);
+        stage.setTitle("FFGraph - Főző-Füstölő Folyamatok Grafikonjai");
         stage.show();
     }
 
@@ -43,7 +44,7 @@ public class App extends Application {
         
         
          
-        /*if(initResult == -1) { 
+        if(initResult == -1) { 
             System.out.println("Database initialization failed.");
             
         } else if (initResult == 0) {
@@ -51,7 +52,7 @@ public class App extends Application {
         } else {
             System.out.println("Database was already present.");
 
-        }*/
+        }
         launch();
     }
 

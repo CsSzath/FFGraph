@@ -43,7 +43,7 @@ public class StepsBar {
 
         // Clear the existing rectangles and labels
         barBox.getChildren().clear();
-        double totalWidth = barBox.getWidth() - 45; //Compensate for padding
+        double totalWidth = barBox.getWidth() - 60; //Compensate for padding
         double barHeight = barBox.getHeight();
 
         
@@ -87,8 +87,8 @@ public class StepsBar {
                 counts.set(counts.size() - 1, counts.get(counts.size() - 1) + 1);               // Increment the count
             }
         }
-        System.out.println("Counts: " + counts); 
-        System.out.println("StepList: " + stepList); 
+        //System.out.println("Counts: " + counts); 
+        //System.out.println("StepList: " + stepList); 
         // Calculate percentages
         int total = 0;
         for (int integer : counts) {

@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 
 
 public class NewProductController implements Initializable{
@@ -31,9 +32,9 @@ public class NewProductController implements Initializable{
 @FXML
     ComboBox<String> selectCompanyName, selectMachineId;
 @FXML
-    TextField inpCompanyName, inpMachineId;
+    TextField inpCompanyName, inpMachineId, inpCoreTempThreshold;
 @FXML
-    Label dispProductName, dispDateTime, lblError;
+    Label dispProductName, dispDateTime, lblError, lblTotalTime, lblMaxCoreTemp, lblTimeAboveTreshold;
 @FXML
     Button switchToFFGraph, btnSave, btnExit;
 @FXML
@@ -42,7 +43,8 @@ public class NewProductController implements Initializable{
     LineChart<String, Number> chtImportedHumidity;
 @FXML
     HBox barSteps;
-
+@FXML
+    TilePane pnlSummary;
 
 
     @Override
@@ -50,9 +52,13 @@ public class NewProductController implements Initializable{
         String [] existingCompaniesList = dbQueries.getAllCompanyNames().toArray(new String[0]);
             selectCompanyName.getItems().clear();
             selectCompanyName.getItems().addAll(existingCompaniesList);
-            if(existingCompaniesList.length > 0) {
-                selectCompanyName.setValue(existingCompaniesList[0]);
-            }
+            
+            selectCompanyName.setPromptText("---");
+            selectMachineId.setPromptText("---");
+            dispProductName.setText("---");
+            dispDateTime.setText("---");
+            pnlSummary.setVisible(false);
+
             lblError.setVisible(false);
             selectMachineId.setDisable(true);
 
@@ -134,6 +140,17 @@ public class NewProductController implements Initializable{
         stepsBar.generateRectangles(); // Call the method to generate rectangles and labels
         barSteps.getChildren().clear(); // Clear the existing rectangles and labels
         barSteps = stepsBar.getBarBox(); // Call the method to draw the rectangles and labels
+
+        //Summary panel
+        lblTotalTime.setText(Calculations.getTotalTime(records));
+        lblMaxCoreTemp.setText(Calculations.getHighestCoreTemp(records));
+        String stringCoreTempThreshold = inpCoreTempThreshold.getText();
+        if(stringCoreTempThreshold.isBlank() || stringCoreTempThreshold.isEmpty()) {
+            inpCoreTempThreshold.setText("80");
+        }
+        lblTimeAboveTreshold.setText(Calculations.countRecordsAboveCoreTemp(records, Integer.parseInt(inpCoreTempThreshold.getText())));
+        pnlSummary.setVisible(true); // Show the summary panel
+
   }
 
 @FXML
@@ -224,6 +241,9 @@ private void bindBarStepsToChartWidth() {
                 dispProductName.setText("---");
                 dispDateTime.setText("---");
                 barSteps.getChildren().clear();
+                pnlSummary.setVisible(false); // Hide the summary panel
+
+
             } else {
                 lblError.setText("Sikertelen mentés.");
                 lblError.setVisible(true);
@@ -275,7 +295,17 @@ private void bindBarStepsToChartWidth() {
         lblError.setVisible(false);
     }
 
-
+    @FXML
+    private void chkThreshold() {
+        if(!inpCoreTempThreshold.getText().matches("\\d+")) {
+            lblError.setText("Kérjük, adjon meg egy egész számot a küszöbértékhez!");
+            lblError.setVisible(true);
+            inpCoreTempThreshold.setText("80"); 
+        } else {
+            System.out.println("Time above threshold will be updated with: " + inpCoreTempThreshold.getText());
+            lblTimeAboveTreshold.setText(Calculations.countRecordsAboveCoreTemp(records, Integer.parseInt(inpCoreTempThreshold.getText())));
+        }
+    }
 
 
 }
