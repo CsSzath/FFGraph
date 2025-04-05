@@ -18,7 +18,8 @@
       <HBox spacing="5.0">
          <children>
             <Button fx:id="switchToSecondary" mnemonicParsing="false" onAction="#switchToSecondary" text="Új termék beolvasása" />
-            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#exportData" text="Adatbázis Export" />
+            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#exportData" text="Adatok írása .csv -be" />
+            <Button fx:id="btnDeleteProduct" mnemonicParsing="false" onAction="#deleteProduct" text="Adatok törlése" />
             <Button fx:id="btnExit" mnemonicParsing="false" onAction="#exitApp" text="Kilépés" />
          </children>
       </HBox>

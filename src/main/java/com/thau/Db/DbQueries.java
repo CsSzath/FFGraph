@@ -137,6 +137,29 @@ public class DbQueries {
         }
     }
 
+    public void deleteDataRecordsByProductId(int productId) {
+        String deleteSql = "DELETE FROM DataRecord WHERE productId = ?;";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+            preparedStatement.setInt(1, productId);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            System.out.println(rowsDeleted + " data records deleted successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProductById(int productId) {
+        String deleteSql = "DELETE FROM Product WHERE id = ?;";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+            preparedStatement.setInt(1, productId);
+            int rowsDeleted = preparedStatement.executeUpdate();
+            System.out.println(rowsDeleted + " product deleted successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     public ArrayList<DataRecord> getDataRecordsByProductId(int productId) {
         String querySql = "SELECT * FROM DataRecord WHERE productId = ? ORDER BY date, time;";

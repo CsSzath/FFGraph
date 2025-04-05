@@ -261,6 +261,7 @@ private void bindBarStepsToChartWidth() {
     @FXML
     private void exitApp() {
         //System.out.println("Exiting application...");
+        App.exportDatabase();
         App.closeConnection();
         System.exit(0);
     }

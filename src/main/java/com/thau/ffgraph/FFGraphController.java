@@ -2,6 +2,7 @@ package com.thau.ffgraph;
 
 import java.io.IOException;
 
+import com.thau.CsvHandler.CsvController;
 import com.thau.DataModel.DataRecord;
 import com.thau.Db.DbQueries;
 
@@ -28,7 +29,7 @@ public class FFGraphController implements Initializable {
     ComboBox<String> selectCompanyName, selectMachineId, selectProductName, selectDateTime;
 
     @FXML
-    Button switchToSecondary, btnExport, btnExit;
+    Button switchToSecondary, btnExport, btnExit, btnDeleteProduct;
 
     @FXML
     LineChart<String, Number> chtTemperature, chtHumidity;
@@ -65,6 +66,8 @@ public class FFGraphController implements Initializable {
         selectMachineId.setDisable(true);
         selectProductName.setDisable(true);
         selectDateTime.setDisable(true);
+        btnExport.setDisable(true);
+        btnDeleteProduct.setDisable(true);
 
         bindBarStepsToChartWidth();
 
@@ -79,6 +82,7 @@ public class FFGraphController implements Initializable {
     @FXML
     private void exitApp() {
         //System.out.println("Exiting application...");
+        App.exportDatabase();
         App.closeConnection();
         System.exit(0);
     }
@@ -95,8 +99,44 @@ public class FFGraphController implements Initializable {
     @FXML
     private void exportData() {
         //System.out.println("Exporting data...");
-        App.exportDatabase();
+        CsvController csvController = new CsvController();
+        DataRecord firstRecord = records.get(0);
+        String startDate = java.time.LocalDate.of(1900, 1, 1).plusDays(firstRecord.getDate()).toString();
+        String startTime = java.time.LocalTime.ofSecondOfDay((long) (firstRecord.getTime() * 60 * 60 * 24)).toString();
+        startTime = startTime.replace(":", "-");
+        String fileName = selectCompanyName.getValue() + "_" 
+                        + selectMachineId.getValue() + "_" 
+                        + selectProductName.getValue() + "_" 
+                        + startDate + "_"
+                        + startTime + ".csv";
+        csvController.exportRecordsToCsv(fileName, selectProductName.getValue(), records);
     }
+
+@FXML
+    private void deleteProduct() {
+        String selectedCompany = selectCompanyName.getValue();
+        String selectedMachineId = selectMachineId.getValue();
+        String selectedProductName = selectProductName.getValue();
+        String selectedDateTime = selectDateTime.getValue();
+        
+        int productId = dbQueries.getProductId(selectedProductName, selectedCompany, selectedMachineId, selectedDateTime);
+        
+        if(productId != -1) {
+            dbQueries.deleteDataRecordsByProductId(productId);
+            dbQueries.deleteProductById(productId);
+            selectMachineId.getItems().clear();
+            selectProductName.getItems().clear();
+            selectDateTime.getItems().clear();
+            clearData();
+            lblError.setText("Sikeresen törölve: " + selectedProductName + " (" + selectedDateTime + ")");
+            lblError.setVisible(true);
+        } else {
+            lblError.setText("Adatbázis hiba: Nincs ilyen termék!");
+            lblError.setVisible(true);
+        }
+    }
+
+
 
     @FXML
     private void companyChosen() {
@@ -175,6 +215,8 @@ public class FFGraphController implements Initializable {
             if(productId != -1) {
                 //System.out.println("Product ID: " + productId);
                 records = dbQueries.getDataRecordsByProductId(productId);
+                btnExport.setDisable(false);
+                btnDeleteProduct.setDisable(false);
                 
                 //Charts
                 chtTemperature.getData().clear();
@@ -233,6 +275,8 @@ public class FFGraphController implements Initializable {
         chtHumidity.getData().clear();
         pnlSummary.setVisible(false);
         barSteps.getChildren().clear();
+        btnExport.setDisable(true);
+        btnDeleteProduct.setDisable(true);
     }
 
     @FXML
