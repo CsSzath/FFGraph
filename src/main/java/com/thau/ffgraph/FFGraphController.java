@@ -61,9 +61,6 @@ public class FFGraphController implements Initializable {
         selectCompanyName.getItems().clear();
         selectCompanyName.getItems().addAll(existingCompaniesList);
 
-        //if(existingCompaniesList.length > 0) {
-        //    selectCompanyName.setValue(existingCompaniesList[0]);
-        //}
         lblError.setVisible(false);
         pnlSummary.setVisible(false);
         selectMachineId.setDisable(true);

@@ -43,12 +43,8 @@ public class StepsBar {
 
         // Clear the existing rectangles and labels
         barBox.getChildren().clear();
-        double totalWidth = barBox.getWidth() - 60; //Compensate for padding
+        double totalWidth = barBox.getWidth() - 60; //Compensate for padding, still not perfect, can't figure how the chart axes are drawn
         double barHeight = barBox.getHeight();
-
-        
-
-        //calculatePercentages(StepTypes); // Call the method to calculate percentages -> has to be done from outside, to be able to react to window resize
 
         for (int i = 0; i < percentages.size(); i++) {
             double rectWidth = (percentages.get(i) / 100.0) * totalWidth; // Calculate the width of the rectangle based on the percentage
