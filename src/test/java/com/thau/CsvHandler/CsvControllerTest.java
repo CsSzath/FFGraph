@@ -82,7 +82,46 @@ public class CsvControllerTest {
         // Test the method
         String productName = csvController.getProductNameFromCsv(testFilePath);
         assertEquals("Kontra füst", productName);
+
+        productName = csvController.getProductNameFromCsv("Example.csv");
+        assertNotEquals("Kontra füst", productName);
     }
 
+
+    @Test
+    public void testGetDateTimeFromCsv() {
+        CsvController csvController = new CsvController();
+
+        // Test the method
+        String dateTime = csvController.getDateTimeFromCsv("Test.csv");
+        assertEquals("2021-03-11 20:41:09", dateTime);
+
+        dateTime = csvController.getDateTimeFromCsv("Example.csv");
+        assertNotEquals("2021-03-11 20:41:09", dateTime);
+    }
     
+
+    @Test
+    public void getProcessStepsFromCsv() {
+        CsvController csvController = new CsvController();
+        String testFilePath = "Test.csv";
+
+        // Test the method
+        ArrayList<DataRecord> records = csvController.importCsvToRecords(testFilePath);
+        ArrayList<Integer> processSteps = csvController.getProcessStepsFromCsv(records);
+
+        assertEquals(6, processSteps.size());
+        assertEquals(3, processSteps.get(0));
+        assertEquals(3, processSteps.get(1));
+        assertNotEquals(1, processSteps.get(2));
+
+        records = csvController.importCsvToRecords("Example.csv");
+        processSteps = csvController.getProcessStepsFromCsv(records);
+
+        assertEquals(239, processSteps.size());
+        assertEquals(1, processSteps.get(0));
+        assertEquals(3, processSteps.get(159));
+        assertEquals(2, processSteps.get(168));
+
+    }
 }

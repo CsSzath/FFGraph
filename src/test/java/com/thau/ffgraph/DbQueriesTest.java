@@ -10,7 +10,6 @@ import com.thau.Db.Registry;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import java.util.ArrayList;
 
 public class DbQueriesTest {
@@ -102,6 +101,8 @@ public class DbQueriesTest {
         db.closeConnection();
     }
 
+    
+
     @Test
     public void testGetDataRecordsByProductId() {
 
@@ -129,4 +130,54 @@ public class DbQueriesTest {
         db.closeConnection();
     }
 
+
+    @Test
+        public void testDeleteDataRecordsByProductId() {
+
+            ArrayList<DataRecord> records = new ArrayList<>();
+            CsvController csvController = new CsvController();
+            String testFilePath = "Test.csv";
+            
+            Registry db = new Registry("Test_export.sql");
+            db.initializeDatabase();
+            records = csvController.importCsvToRecords(testFilePath);
+            DbQueries dbQueries = new DbQueries(db.getConnection());
+            Product product = new Product("Kontra füst", "TestCompany", "TestMachineId", 44264, 0.86191);
+
+            dbQueries.insertProduct(product);
+            int productId = dbQueries.getProductId("Kontra füst", "TestCompany", "TestMachineId", product.getDateTime());
+            dbQueries.insertDataRecords(records, productId);
+
+            // Delete the data records for the given product ID
+            dbQueries.deleteDataRecordsByProductId(productId);
+
+            // Check if the records were deleted
+            ArrayList<DataRecord> readRecords = dbQueries.getDataRecordsByProductId(productId);
+            assertTrue(readRecords.isEmpty(), "Data records were not deleted for the product ID.");
+
+            db.closeConnection();
+
+        }
+
+
+    @Test
+    public void testDeleteProductById() {
+
+        Registry db = new Registry("Test_export.sql");
+        db.initializeDatabase();
+        
+        DbQueries dbQueries = new DbQueries(db.getConnection());
+        Product product = new Product("Kontra füst", "TestCompany", "TestMachineId", 44264, 0.86191);
+        dbQueries.insertProduct(product);
+
+        int productId = dbQueries.getProductId("Kontra füst", "TestCompany", "TestMachineId", product.getDateTime());
+        dbQueries.deleteProductById(productId);
+
+        // Check if the product was deleted
+        int deletedProductId = dbQueries.getProductId("Kontra füst", "TestCompany", "TestMachineId", product.getDateTime());
+        assertEquals(-1, deletedProductId, "Product was not deleted: Product ID should be -1.");
+
+        db.closeConnection();
+
+    }
 }

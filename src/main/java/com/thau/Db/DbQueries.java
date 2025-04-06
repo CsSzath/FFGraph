@@ -143,7 +143,7 @@ public class DbQueries {
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
             preparedStatement.setInt(1, productId);
             int rowsDeleted = preparedStatement.executeUpdate();
-            System.out.println(rowsDeleted + " data records deleted successfully!");
+            //System.out.println(rowsDeleted + " data records deleted successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +155,7 @@ public class DbQueries {
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
             preparedStatement.setInt(1, productId);
             int rowsDeleted = preparedStatement.executeUpdate();
-            System.out.println(rowsDeleted + " product deleted successfully!");
+            //System.out.println(rowsDeleted + " product deleted successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -174,11 +174,11 @@ public class DbQueries {
                 DataRecord record = new DataRecord(i, 
                             resultSet.getInt( "date"), 
                             resultSet.getDouble("time"),
-                0, 
-                    0, 
+               0, 
+                  0, 
                             resultSet.getInt("milliseconds"),
                 0, 
-                    0, 
+                  0, 
                             resultSet.getInt("airTemp"),   
                             resultSet.getInt("coreTemp"), 
                             resultSet.getInt("humidity"),
